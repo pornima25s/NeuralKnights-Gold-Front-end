@@ -504,7 +504,19 @@ function Header() {
               </Link>
             </li>
 
-            {/* <li className="flex items-center">
+            
+
+            <li>
+              <Link className="no-underline font-semibold sign-in-btn" to="/login">
+                <button className="sign-in-button">Sign In</button>
+              </Link>
+            </li>
+            <li>
+              <Link className="no-underline font-semibold sign-in-btn" to="/profile">
+                <button className="sign-in-button">My profile</button>
+              </Link>
+            </li>
+            <li className="flex items-center">
               <input
                 type="checkbox"
                 className="checkbox hidden"
@@ -517,20 +529,11 @@ function Header() {
                 <i className="fas fa-sun"></i>
                 <span className="ball"></span>
               </label>
-            </li> */}
-
-            <li>
-              <Link className="no-underline font-semibold sign-in-btn" to="/login">
-                <button className="sign-in-button">Sign In</button>
-              </Link>
-            </li>
-            <li>
-              <Link className="no-underline font-semibold sign-in-btn" to="/profile">
-                <button className="sign-in-button">My profile</button>
-              </Link>
             </li>
           </ul>
         </div>
+
+        
 
         <div
           className={active ? "ham-burger z-index-100 ham-open" : "ham-burger z-index-100"}

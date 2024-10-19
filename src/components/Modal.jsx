@@ -306,14 +306,6 @@
 
 
 
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import "./Modal.css";
 
@@ -349,11 +341,11 @@ const Modal = ({ show, onClose, article, children }) => {
       .then((data) => {
         console.log("Bookmark created:", data);
         setIsBookmarked(true);
-        alert("Article bookmarked successfully!"); // Alert on successful bookmark
+        alert("Article bookmarked successfully!");
       })
       .catch((error) => {
         console.error("Error bookmarking:", error);
-        alert("Error bookmarking the article. Please try again."); // Alert on error
+        alert("Error bookmarking the article. Please try again.");
       });
   };
 
@@ -383,7 +375,7 @@ const Modal = ({ show, onClose, article, children }) => {
       .then((data) => {
         console.log("Feedback submitted:", data);
         setInputValue("");
-        setRating(0); // Reset the rating after submission if needed
+        setRating(0);
       })
       .catch((error) => {
         console.error("Error submitting feedback:", error);
