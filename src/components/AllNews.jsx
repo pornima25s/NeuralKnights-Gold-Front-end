@@ -1772,7 +1772,7 @@ function AllNews() {
                 <div>
                   <h3 className="text-xl font-bold">Fake News Data</h3>
                   <p>
-                    Probability of Not Fake News: {fakeNewsData.toFixed(2)}%
+                    Probability of Not Fake News: {fakeNewsData.toFixed(2) *100}%
                   </p>{" "}
                   {/* Display probability as percentage */}
                 </div>
@@ -1804,22 +1804,13 @@ function AllNews() {
         </Modal>
       )}
 
-      <div className="flex justify-between my-4">
-        <button
-          onClick={handlePrev}
-          disabled={page === 1}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={page >= Math.ceil(totalResults / pageSize)}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
-          Next
-        </button>
-      </div>
+      {!isLoading && data.length > 0 && (
+        <div className="pagination flex justify-center gap-14 my-10 items-center">
+          <button disabled={page <= 1} className='pagination-btn' onClick={handlePrev}>Prev</button>
+          <p className='font-semibold opacity-80'>{page} of {Math.ceil(totalResults / pageSize)}</p>
+          <button className='pagination-btn' disabled={page >= Math.ceil(totalResults / pageSize)} onClick={handleNext}>Next</button>
+        </div>
+      )}
     </>
   );
 }
