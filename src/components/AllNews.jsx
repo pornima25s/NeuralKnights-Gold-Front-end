@@ -1042,8 +1042,6 @@
 
 
 
-
-
 import { React, useState, useEffect } from "react";
 import EverythingCard from "./EverythingCard";
 import Loader from "./Loader";
@@ -1072,6 +1070,7 @@ function AllNews() {
   const fallbackImage =
     "https://via.placeholder.com/400x300?text=No+Image+Available"; // Fallback image URL
 
+  // Handle the click event for each article
   const handleArticleClick = (article) => {
     setIsModalOpen(true);
     setSelectedArticle(article.id);
@@ -1083,6 +1082,7 @@ function AllNews() {
     fetchFakeNews(article.id); // Fetch fake news when article is clicked
   };
 
+  // Fetch sentiment data
   const fetchSentimentData = (articleId) => {
     const token = localStorage.getItem("token");
     setLoadingSentiment(true);
@@ -1114,6 +1114,7 @@ function AllNews() {
       });
   };
 
+  // Fetch word cloud data
   const fetchWordCloudData = (articleId) => {
     const token = localStorage.getItem("token");
     setLoadingWordCloud(true);
@@ -1144,36 +1145,7 @@ function AllNews() {
       });
   };
 
-  // New fetchFakeNews function
-  // const fetchFakeNews = (articleId) => {
-  //   const token = localStorage.getItem('token');
-  //   setLoadingFakeNews(true);
-
-  //   fetch(`http://localhost:8000/api/fake-news/${articleId}/`, {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch fake news data.');
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data); // Log the response data
-  //       setFakeNewsData(data); // Set fetched fake news data
-  //     })
-  //     .catch((error) => {
-  //       console.error('Fake News fetch error:', error);
-  //       setFakeNewsData('Error fetching fake news data.');
-  //     })
-  //     .finally(() => {
-  //       setLoadingFakeNews(false);
-  //     });
-  // };
+  // Fetch fake news data
   const fetchFakeNews = (articleId) => {
     const token = localStorage.getItem("token");
     setLoadingFakeNews(true);
@@ -1204,6 +1176,7 @@ function AllNews() {
       });
   };
 
+  // Pagination handlers
   const handlePrev = () => {
     if (page > 1) setPage(page - 1);
   };
@@ -1212,6 +1185,7 @@ function AllNews() {
     if (page < Math.ceil(totalResults / pageSize)) setPage(page + 1);
   };
 
+  // Close modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedArticle(null);
@@ -1221,13 +1195,14 @@ function AllNews() {
     setFakeNewsData(null); // Reset fake news data when modal closes
   };
 
+  // Fetch articles when component mounts or page/search query changes
   useEffect(() => {
     const fetchArticles = () => {
       setIsLoading(true);
       setError(null);
 
       const token = localStorage.getItem("token");
-      fetch(`http://localhost:8000/api/articles/`, {
+      fetch(`http://localhost:8000/api/articles/?search=${searchQuery}&page=${page}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1238,7 +1213,7 @@ function AllNews() {
           if (response.ok) {
             return response.json();
           }
-          // throw new Error("Network response was not ok");
+          throw new Error("Failed to fetch articles.");
         })
         .then((myJson) => {
           if (myJson.results) {
@@ -1273,7 +1248,7 @@ function AllNews() {
               key={index}
               title={element.title}
               description={element.description}
-              imgUrl={element.url_to_image}
+              imgUrl={element.url_to_image || fallbackImage}
               publishedAt={element.published_at}
               url={element.url}
               author={element.author}
@@ -1308,7 +1283,7 @@ function AllNews() {
                 </p>
                 <p className="font-semibold text-lg">
                   Published on:{" "}
-                  {new Date(articleContent.publishedAt).toLocaleDateString()}
+                  {new Date(articleContent.published_at).toLocaleDateString()}
                 </p>
                 <p className="font-semibold text-lg">
                   Author: {articleContent.author}
@@ -1328,67 +1303,51 @@ function AllNews() {
             </>
           )}
 
-          {loadingSentiment ? (
-            <Loader />
-          ) : (
+          {loadingSentiment && <Loader />}
+          {sentimentPData && (
             <div className="mt-4">
               <h3 className="text-xl font-bold">Sentiment Analysis</h3>
-              {sentimentPData !== null && (
-                <p>Positive Sentiment: {sentimentPData}%</p>
-              )}
-              {sentimentNData !== null && (
-                <p>Negative Sentiment: {sentimentNData}%</p>
-              )}
+              <p>Positive Sentiment: {sentimentPData.toFixed(2)}%</p>
+              <p>Negative Sentiment: {sentimentNData.toFixed(2)}%</p>
             </div>
           )}
 
           {loadingWordCloud ? (
             <Loader />
           ) : (
-            <div className="mt-4">
-              {wordCloudData ? (
-                <img
-                  src={wordCloudData}
-                  alt="Word Cloud"
-                  className="w-full h-auto"
-                />
-              ) : (
-                <p>No word cloud data available.</p>
-              )}
-            </div>
+            wordCloudData && (
+              <div className="mt-4">
+                <h3 className="text-xl font-bold">Word Cloud</h3>
+                <img src={wordCloudData} alt="Word Cloud" />
+              </div>
+            )
           )}
+
           {loadingFakeNews ? (
             <Loader />
           ) : (
-            <div className="mt-4">
-              {fakeNewsData ? (
-                <div>
-                  <h3 className="text-xl font-bold">Fake News Data</h3>
-                  <p>
-                    Probability of Not Fake News: {fakeNewsData.toFixed(2)}%
-                  </p>{" "}
-                  {/* Display probability as percentage */}
-                </div>
-              ) : (
-                <p>No fake news data available.</p>
-              )}
-            </div>
+            fakeNewsData && (
+              <div className="mt-4">
+                <h3 className="text-xl font-bold">Fake News Analysis</h3>
+                <p>{fakeNewsData}</p>
+              </div>
+            )
           )}
         </Modal>
       )}
 
-      <div className="flex justify-between my-4">
+      <div className="flex justify-between mt-4">
         <button
           onClick={handlePrev}
-          disabled={page === 1}
-          className="bg-blue-500 text-white p-2 rounded"
+          disabled={page <= 1}
+          className={`px-4 py-2 text-white bg-blue-600 rounded ${page <= 1 && "opacity-50 cursor-not-allowed"}`}
         >
           Previous
         </button>
         <button
           onClick={handleNext}
           disabled={page >= Math.ceil(totalResults / pageSize)}
-          className="bg-blue-500 text-white p-2 rounded"
+          className={`px-4 py-2 text-white bg-blue-600 rounded ${page >= Math.ceil(totalResults / pageSize) && "opacity-50 cursor-not-allowed"}`}
         >
           Next
         </button>

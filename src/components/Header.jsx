@@ -464,7 +464,7 @@ function Header() {
               </ul>
             </li>
 
-            <li className="dropdown-li">
+            {/* <li className="dropdown-li">
               <Link
                 className="no-underline font-semibold flex items-center gap-2 text-white"
                 onClick={() => {
@@ -496,9 +496,14 @@ function Header() {
                   </li>
                 ))}
               </ul>
+            </li> */}
+            <li>
+              <Link className="no-underline font-semibold sign-in-btn" to="./Recommended">
+                <button className="sign-in-button">Recommendation</button>
+              </Link>
             </li>
 
-            <li className="flex items-center">
+            {/* <li className="flex items-center">
               <input
                 type="checkbox"
                 className="checkbox hidden"
@@ -511,7 +516,7 @@ function Header() {
                 <i className="fas fa-sun"></i>
                 <span className="ball"></span>
               </label>
-            </li>
+            </li> */}
 
             <li>
               <Link className="no-underline font-semibold sign-in-btn" to="/login">
