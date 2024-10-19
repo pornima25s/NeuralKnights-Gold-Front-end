@@ -1,19 +1,6 @@
 import React, { useState } from "react";
 
 function EverythingCard(props) {
-  // State for likes and rating
-  const [likes, setLikes] = useState(0);
-  const [rating, setRating] = useState(0);
-
-  // Function to handle like button click
-  const handleLike = () => {
-    setLikes(likes + 1);
-  };
-
-  // Function to handle rating click
-  const handleRating = (newRating) => {
-    setRating(newRating);
-  };
 
   return (
     <div className="everything-card mt-20" onClick={props.onClick} style={{ cursor: 'pointer' }}>
