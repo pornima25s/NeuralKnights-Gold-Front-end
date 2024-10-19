@@ -1772,7 +1772,7 @@ function AllNews() {
                 <div>
                   <h3 className="text-xl font-bold">Fake News Data</h3>
                   <p>
-                    Probability of Not Fake News: {fakeNewsData.toFixed(2)}%
+                    Probability of Not Fake News: {fakeNewsData.toFixed(2) *100}%
                   </p>{" "}
                   {/* Display probability as percentage */}
                 </div>

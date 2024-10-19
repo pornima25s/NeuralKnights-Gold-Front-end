@@ -248,7 +248,7 @@ function MyProfile() {
                       <strong>Article ID:</strong> {review.article},{" "}
                       <strong>Rating:</strong> {review.rating},
                       <p className="text-gray-600">
-                        <strong>Comment:</strong> {review.comment}
+                        <strong>Comment:</strong> {review.feedback}
                       </p>
                     </li>
                   ))}
