@@ -16,19 +16,19 @@ function EverythingBookCard(props) {
   };
 
 return (
-    <div className="everything-card mt-10" onClick={props.onClick} style={{ cursor: 'pointer', maxWidth: '300px' }}>
+    <div className="everything-card mt-10" onClick={props.onClick} style={{ cursor: 'pointer', maxWidth: '400px' }}>
         <div className="everything-card flex flex-wrap p-5 gap-1 mb-1">
-            <b className="title text-sm">{props.title}</b>
+            <b className="title text-md">{props.title}</b>
             <div className="everything-card-img mx-auto">
                 <img className="everything-card-img" src={props.imgUrl} alt="img" style={{ maxHeight: '150px' }} />
             </div>
             <div className="description">
-                <p className="description-text leading-5 text-xs">
+                <p className="description-text leading-5 text-sm">
                     {props.description?.substring(0, 100)} {/* Truncate description */}
                 </p>
             </div>
             <div className="info">
-                <div className="source-info flex items-center gap-1 text-xs">
+                <div className="source-info flex items-center gap-1 text-sm">
                     <span className="font-semibold">Source:</span>
                     <a
                         href={props.url}
@@ -39,12 +39,12 @@ return (
                         {props.source.substring(0, 50)}
                     </a>
                 </div>
-                <div className="origin flex flex-col text-xs">
+                <div className="origin flex flex-col text-sm">
                     <p className="origin-item">
                         <span className="font-semibold">Author:</span>
                         {props.author}
                     </p>
-                    <p className="origin-item">
+                    <p className="origin-item flex-col text-sm">
                         <span className="font-semibold">Published At:</span>
                         ({props.publishedAt})
                     </p>
