@@ -52,31 +52,6 @@ function EverythingCard(props) {
         </div>
       </div>
 
-      {/* New Like and Rating System */}
-      <div className="flex items-center gap-4 mt-4">
-        {/* Like Button */}
-        <button
-          onClick={handleLike}
-          className="like-btn px-3 py-2 bg-blue-500 text-white rounded"
-        >
-          👍 Like {likes}
-        </button>
-
-        {/* Rating System */}
-        <div className="rating flex gap-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span
-              key={star}
-              onClick={() => handleRating(star)}
-              className={`cursor-pointer ${rating >= star ? "text-yellow-500" : "text-gray-400"}`}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-        <span className="text-sm">Rating: {rating}/5</span>
-      </div>
-
       {/* Additional Card Content */}
       <div className="flex lg:flex-row mt-4">
         <div
