@@ -8,7 +8,7 @@ import LoginPopus from './components/LoginPopus';
 import MyProfile from './components/MyProfile';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CountryNews from "./components/CountryNews";
-
+import SearchResult from "./components/SearchResult";
 function App() {
   const [count, setCount] = useState(0)
   return (
@@ -21,6 +21,7 @@ function App() {
           <Route path="/country/:iso" element={<CountryNews />} />
           <Route path="/login" element={<LoginPopus />} />
           <Route path="/profile" element={<MyProfile />} />
+          <Route path="/search/:searchQuery" element={<SearchResult />} />
         </Routes>
         {/* <Cards />  */}
         {/* <Footer />   */}
