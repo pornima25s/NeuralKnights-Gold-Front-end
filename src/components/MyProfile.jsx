@@ -101,21 +101,19 @@ function MyProfile() {
           Menu
         </h2>
         <button
-          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${
-            activeSection === "profile"
-              ? "bg-gray-300 border border-gray-400"
-              : ""
-          }`}
+          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${activeSection === "profile"
+            ? "bg-gray-300 border border-gray-400"
+            : ""
+            }`}
           onClick={() => setActiveSection("profile")}
         >
           My Profile
         </button>
         <button
-          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${
-            activeSection === "bookmarks"
-              ? "bg-gray-300 border border-gray-500"
-              : ""
-          }`}
+          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${activeSection === "bookmarks"
+            ? "bg-gray-300 border border-gray-500"
+            : ""
+            }`}
           onClick={() => {
             setActiveSection("bookmarks");
             getBookmark();
@@ -124,11 +122,10 @@ function MyProfile() {
           My Bookmarks
         </button>
         <button
-          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${
-            activeSection === "reviews"
-              ? "bg-gray-300 border border-gray-400"
-              : ""
-          }`}
+          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${activeSection === "reviews"
+            ? "bg-gray-300 border border-gray-400"
+            : ""
+            }`}
           onClick={() => {
             setActiveSection("reviews");
             getReviews();
@@ -208,7 +205,7 @@ function MyProfile() {
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Bookmarks</h3>
               {!loadingWordCloud && bookmarks.length > 0 ? (
-                <div className="my-10 cards grid lg:place-content-center md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 xs:grid-cols-1 xs:gap-4 md:gap-10 lg:gap-14 md:px-16 xs:p-3">
+                <div className="my-10 cards grid lg:place-content-center md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 xs:grid-cols-1 xs:gap-4 md:gap-10 lg:gap-14 md:px-16 xs:p-3">
                   {bookmarks.map((bookmark, index) => (
                     <EverythingBookCard
                       key={index}
@@ -240,29 +237,46 @@ function MyProfile() {
         {activeSection === "reviews" && (
           <div className="bg-white shadow-lg rounded-lg p-6 mt-4">
             {loadingWordCloud && (
-              <div className="text-gray-600">Loading reviews...</div>
+              <div className="text-gray-600 text-center">Loading reviews...</div>
             )}
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">Reviews</h3>
+              <h3 className="text-xl font-bold mb-4 text-gray-800">Reviews</h3>
               {reviews.length > 0 ? (
-                <ul className="list-disc list-inside mt-2">
+                <ul className="space-y-4">
                   {reviews.map((review) => (
-                    <li key={review.id} className="text-gray-700">
-                      <strong>Review ID:</strong> {review.id},{" "}
-                      <strong>Article ID:</strong> {review.article},{" "}
-                      <strong>Rating:</strong> {review.rating},
-                      <p className="text-gray-600">
+                    <li
+                      key={review.id}
+                      className="border border-gray-200 rounded-lg p-4 bg-gray-50 shadow-sm"
+                    >
+                      <div className="mb-2">
+                        <span className="text-sm font-semibold text-gray-500">Review ID:</span>
+                        <span className="text-gray-700 ml-2">{review.id}</span>
+                      </div>
+                      <div className="mb-2">
+                        <span className="text-sm font-semibold text-gray-500">Article ID:</span>
+                        <span className="text-gray-700 ml-2">{review.article}</span>
+                      </div>
+                      <div className="mb-2">
+                        <span className="text-sm font-semibold text-gray-500">Rating:</span>
+                        <span className="text-gray-700 ml-2">{review.rating}</span>
+                      </div>
+                      <div className="text-sm text-gray-600 mt-2">
                         <strong>Comment:</strong> {review.feedback}
-                      </p>
+                      </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                !loadingWordCloud && <div>No reviews found.</div>
+                !loadingWordCloud && (
+                  <div className="text-gray-500 text-center mt-4">
+                    No reviews found.
+                  </div>
+                )
               )}
             </div>
           </div>
         )}
+
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CountryNews from "./components/CountryNews";
 import SearchResult from "./components/SearchResult";
 import Recommended from "./components/Recommanded"
+import SignUp from "./components/SignUp";
 function App() {
   const [count, setCount] = useState(0);
   
@@ -23,6 +24,7 @@ function App() {
           <Route path="/login" element={<LoginPopus />} />
           <Route path="/profile" element={<MyProfile />} />
           <Route path="/search/:searchQuery" element={<SearchResult />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/Recommended" element={<Recommended />} />
 
         </Routes>
