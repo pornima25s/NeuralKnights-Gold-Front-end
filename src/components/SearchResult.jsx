@@ -11,13 +11,57 @@ function SearchResult() {
 
   const fallbackImage = "https://via.placeholder.com/400x300?text=No+Image+Available"; // Fallback image URL
 
+  // useEffect(() => {
+  //   const fetchSearchResults = () => {
+  //     setIsLoading(true);
+  //     setError(null);
+  
+  //     const token = localStorage.getItem("token");
+  
+  //     fetch(`http://localhost:8000/api/articles/?search=${searchQuery}`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //       .then((response) => {
+  //         console.log("Response object:", response); // Log the raw response
+  
+  //         if (response.ok) {
+  //           return response.json();
+  //         }
+  //         throw new Error("Failed to fetch search results.");
+  //       })
+  //       .then((myJson) => {
+  //         console.log("Parsed JSON:", myJson); // Log the parsed JSON
+  
+  //         if (myJson.results) {
+  //           console.log("Results:", myJson.results); // Log the specific results array
+  //           setData(myJson.results);
+  //         } else {
+  //           setError(myJson.message || "An error occurred.");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Fetch error:", error);
+  //         setError("Failed to fetch search results. Please try again later.");
+  //       })
+  //       .finally(() => {
+  //         setIsLoading(false);
+  //       });
+  //   };
+  
+  //   fetchSearchResults();
+  // }, [searchQuery]); // Re-fetch when searchQuery changes
   useEffect(() => {
     const fetchSearchResults = () => {
       setIsLoading(true);
       setError(null);
-
+  
       const token = localStorage.getItem("token");
-      fetch(`http://localhost:8000/api/articles/?=${searchQuery}`, {
+  
+      fetch(`http://localhost:8000/api/articles/?search=${searchQuery}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -25,14 +69,20 @@ function SearchResult() {
         },
       })
         .then((response) => {
+          console.log("Response object:", response);
+  
           if (response.ok) {
             return response.json();
           }
           throw new Error("Failed to fetch search results.");
         })
         .then((myJson) => {
-          if (myJson.results) {
-            setData(myJson.results);
+          console.log("Parsed JSON:", myJson); // Log the parsed JSON
+  
+          // Access the array directly, as there is no `results` key
+          if (Array.isArray(myJson)) {
+            console.log("Results:", myJson); // Log the specific results array
+            setData(myJson); // Set data directly from response array
           } else {
             setError(myJson.message || "An error occurred.");
           }
@@ -45,10 +95,10 @@ function SearchResult() {
           setIsLoading(false);
         });
     };
-
+  
     fetchSearchResults();
-  }, [searchQuery]); // Re-fetch when searchQuery changes
-
+  }, [searchQuery]);
+  
   return (
     <>
       {error && <div className="text-red-500 mb-4">{error}</div>}
