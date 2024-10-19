@@ -1336,8 +1336,8 @@ function AllNews() {
         </Modal>
       )}
 
-      <div className="flex justify-between mt-4">
-        <button
+     
+        {/* <button
           onClick={handlePrev}
           disabled={page <= 1}
           className={`px-4 py-2 text-white bg-blue-600 rounded ${page <= 1 && "opacity-50 cursor-not-allowed"}`}
@@ -1350,8 +1350,15 @@ function AllNews() {
           className={`px-4 py-2 text-white bg-blue-600 rounded ${page >= Math.ceil(totalResults / pageSize) && "opacity-50 cursor-not-allowed"}`}
         >
           Next
-        </button>
-      </div>
+        </button> */}
+        {!isLoading && data.length > 0 && (
+        <div className="pagination flex justify-center gap-14 my-10 items-center">
+          <button disabled={page <= 1} className='pagination-btn' onClick={handlePrev}>Prev</button>
+          <p className='font-semibold opacity-80'>{page} of {Math.ceil(totalResults / pageSize)}</p>
+          <button className='pagination-btn' disabled={page >= Math.ceil(totalResults / pageSize)} onClick={handleNext}>Next</button>
+        </div>
+      )}
+      
     </>
   );
 }

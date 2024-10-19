@@ -69,7 +69,10 @@ function Recommended() {
         ) : (
           <Loader />
         )}
+
+        
       </div>
+      
     </>
   );
 }

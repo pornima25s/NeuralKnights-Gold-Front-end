@@ -658,33 +658,7 @@ function MyProfile() {
         </div>
       </div>
 
-      <div className="w-full mt-[100px] p-6 bg-white shadow-lg rounded-lg">
-        <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
-          Recommended News
-        </h2>
-        <ul className="list-disc list-inside text-gray-700 text-center">
-          {/* Example recommended news items */}
-          <li className="mb-2">
-            <a href="#" className="text-blue-600 hover:underline">
-              Article Title 1
-            </a>
-            : A brief description of the first recommended article.
-          </li>
-          <li className="mb-2">
-            <a href="#" className="text-blue-600 hover:underline">
-              Article Title 2
-            </a>
-            : A brief description of the second recommended article.
-          </li>
-          <li className="mb-2">
-            <a href="#" className="text-blue-600 hover:underline">
-              Article Title 3
-            </a>
-            : A brief description of the third recommended article.
-          </li>
-          {/* Add more recommended articles as needed */}
-        </ul>
-      </div>
+      
     </>
   );
 }
