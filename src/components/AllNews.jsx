@@ -1035,13 +1035,6 @@
 
 // export default AllNews;
 
-
-
-
-
-
-
-
 // import { React, useState, useEffect } from "react";
 // import EverythingCard from "./EverythingCard";
 // import Loader from "./Loader";
@@ -1397,6 +1390,9 @@
 
 // export default AllNews;
 
+
+
+
 import { React, useState, useEffect } from "react";
 import EverythingCard from "./EverythingCard";
 import Loader from "./Loader";
@@ -1416,6 +1412,8 @@ function AllNews() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingSentiment, setLoadingSentiment] = useState(false);
   const [loadingWordCloud, setLoadingWordCloud] = useState(false);
+  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [summaryData, setSummaryData] = useState(null);
   const [articleContent, setArticleContent] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [fakeNewsData, setFakeNewsData] = useState(null);
@@ -1434,6 +1432,7 @@ function AllNews() {
     fetchSentimentData(article.id);
     fetchWordCloudData(article.id);
     fetchFakeNews(article.id); // Fetch fake news when article is clicked
+    fetchSummary(article.id);
   };
 
   const fetchSentimentData = (articleId) => {
@@ -1466,6 +1465,62 @@ function AllNews() {
         setLoadingSentiment(false);
       });
   };
+  // const fetchSummary = (articleId) => {
+  //   const token = localStorage.getItem("token");
+  //   setLoadingSummary(true);
+
+  //     fetch(`http://localhost:8000/api/summary/${articleId}/`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //       .then((response) => {
+  //         if (response.ok) {
+  //           return response.json();
+  //         }
+  //         throw new Error("Failed to fetch sentiment data.");
+  //       })
+  //       .then((data) => {
+  //         setSummaryData(data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Sentiment fetch error:", error);
+  //       })
+  //       .finally(() => {
+  //         setLoadingSummary(false);
+  //       });
+  //   };
+  const fetchSummary = (articleId) => {
+    const token = localStorage.getItem("token");
+    setLoadingSummary(true);
+
+    fetch(`http://localhost:8000/api/summary/${articleId}/`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Failed to fetch summary data.");
+      })
+      .then((data) => {
+        console.log("Summary response data:", data); // Log the response data
+        setSummaryData(data.summary || "No summary available."); // Use 'data.summary' if it's nested inside a 'summary' field
+      })
+      .catch((error) => {
+        console.error("Summary fetch error:", error);
+        setSummaryData("Error fetching summary data."); // Display an error message if fetching fails
+      })
+      .finally(() => {
+        setLoadingSummary(false);
+      });
+  };
 
   const fetchWordCloudData = (articleId) => {
     const token = localStorage.getItem("token");
@@ -1496,7 +1551,6 @@ function AllNews() {
         setLoadingWordCloud(false);
       });
   };
-
   // New fetchFakeNews function
   // const fetchFakeNews = (articleId) => {
   //   const token = localStorage.getItem('token');
@@ -1725,6 +1779,26 @@ function AllNews() {
               ) : (
                 <p>No fake news data available.</p>
               )}
+            </div>
+          )}
+          {loadingSummary ? (
+            // <Loader />
+            <div>Loading summary...</div>
+            
+          ) : (
+            <div className="mt-4">
+              {summaryData ? (
+                <div>
+                  <h3 className="text-xl font-bold">Summary of Article</h3>
+                  <p>
+                     {summaryData}
+                  </p>{" "}
+                  {/* Display probability as percentage */}
+                </div>
+              ) : (
+                <p>No data available.</p>
+              )}
+              {/* Ensure summaryData is wrapped in a <p> tag */}
             </div>
           )}
         </Modal>

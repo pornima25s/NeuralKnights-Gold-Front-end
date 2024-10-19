@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from "react";
 import "./MyProfile.css";
+import EverythingBookCard from "./EverythingBookCard";
 
 function MyProfile() {
   const [profileData, setProfileData] = useState(null);
@@ -52,6 +53,7 @@ function MyProfile() {
         return response.json();
       })
       .then((data) => {
+        console.log(data)
         setBookmarks(data.results || []);
       })
       .catch((error) => {
@@ -93,19 +95,29 @@ function MyProfile() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-r from-purple-300 via-pink-300 to-red-300">
+    <div className="flex h-screen w-screen bg-gradient-to-r from-purple-300 via-pink-300 to-red-300">
       <div className="sidebar w-1/5 bg-white p-6 shadow-lg rounded-lg mt-[100px]">
-        <h2 className="text-2xl font-bold text-center text-gray-700 mb-4">Menu</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-700 mb-4">
+          Menu
+        </h2>
         <button
           className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 
-            ${activeSection === "profile" ? "bg-gray-300 border border-gray-400" : ""}`}
+            ${
+              activeSection === "profile"
+                ? "bg-gray-300 border border-gray-400"
+                : ""
+            }`}
           onClick={() => setActiveSection("profile")}
         >
           My Profile
         </button>
         <button
           className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 
-            ${activeSection === "bookmarks" ? "bg-gray-300 border border-gray-400" : ""}`}
+            ${
+              activeSection === "bookmarks"
+                ? "bg-gray-300 border border-gray-500"
+                : ""
+            }`}
           onClick={() => {
             setActiveSection("bookmarks");
             getBookmark(); // Fetch bookmarks when the button is clicked
@@ -115,7 +127,11 @@ function MyProfile() {
         </button>
         <button
           className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 
-            ${activeSection === "reviews" ? "bg-gray-300 border border-gray-400" : ""}`}
+            ${
+              activeSection === "reviews"
+                ? "bg-gray-300 border border-gray-400"
+                : ""
+            }`}
           onClick={() => {
             setActiveSection("reviews");
             getReviews(); // Fetch reviews when the button is clicked
@@ -125,7 +141,7 @@ function MyProfile() {
         </button>
       </div>
 
-      <div className="content w-3/4 mx-auto mt-24 p-6">
+      <div className="content w-4/5 mx-auto mt-24 p-6"> {/* Increased width from w-3/4 to w-4/5 */}
         {error && <div className="text-red-500 font-semibold">{error}</div>}
         {!error && !profileData && (
           <div className="text-gray-600">Loading profile...</div>
@@ -138,7 +154,9 @@ function MyProfile() {
                   {profileData.first_name} {profileData.last_name}
                 </h2>
                 <p className="text-gray-600">{profileData.email}</p>
-                <span className="text-sm text-gray-500">User ID: {profileData.id}</span>
+                <span className="text-sm text-gray-500">
+                  User ID: {profileData.id}
+                </span>
               </div>
             </div>
 
@@ -183,42 +201,52 @@ function MyProfile() {
           </div>
         )}
         {activeSection === "bookmarks" && (
-          <div className="bg-white shadow-lg rounded-lg p-6 mt-4">
-            {loadingWordCloud && <div className="text-gray-600">Loading bookmarks...</div>}
+          <div className="bg-white shadow-lg rounded-lg p-6 mt-4" style={{ width: '1000px' }}>
+
+            {loadingWordCloud && (
+              <div className="text-gray-600">Loading bookmarks...</div>
+            )}
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Bookmarks</h3>
-              {bookmarks.length > 0 ? (
-                <ul className="list-disc list-inside mt-2">
-                  {bookmarks.map((bookmark) => (
-                    <li key={bookmark.id} className="text-gray-700">
-                      <strong>Bookmark ID:</strong> {bookmark.id}, <strong>Article ID:</strong> {bookmark.article}, <strong>Title:</strong> {bookmark.title},
-                      <a
-                        href={bookmark.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline mt-2 block"
-                      >
-                        Read Full Article
-                      </a>
-                    </li>
+              {!loadingWordCloud && bookmarks.length > 0 ? (
+                <div className="my-10 cards grid lg:place-content-center md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 xs:grid-cols-1 xs:gap-4 md:gap-10 lg:gap-14 md:px-16 xs:p-3">
+                  {bookmarks.map((bookmark, index) => (
+                    <EverythingBookCard
+                      key={index}
+                      title={bookmark.article.title}
+                      description={
+                        bookmark.article.description || "No description available"
+                      }
+                      imgUrl={bookmark.article.url_to_image}
+                      publishedAt={bookmark.article.published_at || "Unknown Date"}
+                      url={bookmark.article.url}
+                      author={bookmark.article.author || "Unknown"}
+                      source={bookmark.article.source || "Unknown Source"}
+                      onClick={() => window.open(bookmark.article.url, "_blank")} // Opens the article in a new tab
+                    />
                   ))}
-                </ul>
+                </div>
               ) : (
                 !loadingWordCloud && <div>No bookmarks found.</div>
               )}
             </div>
           </div>
         )}
+
         {activeSection === "reviews" && (
           <div className="bg-white shadow-lg rounded-lg p-6 mt-4">
-            {loadingWordCloud && <div className="text-gray-600">Loading reviews...</div>}
+            {loadingWordCloud && (
+              <div className="text-gray-600">Loading reviews...</div>
+            )}
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Reviews</h3>
               {reviews.length > 0 ? (
                 <ul className="list-disc list-inside mt-2">
                   {reviews.map((review) => (
                     <li key={review.id} className="text-gray-700">
-                      <strong>Review ID:</strong> {review.id}, <strong>Article ID:</strong> {review.article}, <strong>Rating:</strong> {review.rating},
+                      <strong>Review ID:</strong> {review.id},{" "}
+                      <strong>Article ID:</strong> {review.article},{" "}
+                      <strong>Rating:</strong> {review.rating},
                       <p className="text-gray-600">
                         <strong>Comment:</strong> {review.comment}
                       </p>
