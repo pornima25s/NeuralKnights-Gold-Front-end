@@ -1033,9 +1033,7 @@
   //   );
   // }
 
-  // export default AllNews;
-
-
+// export default AllNews;
 
 
 
@@ -1427,22 +1425,20 @@
     const fallbackImage =
       "https://via.placeholder.com/400x300?text=No+Image+Available"; // Fallback image URL
 
-    // Handle the click event for each article
-    const handleArticleClick = (article) => {
-      setIsModalOpen(true);
-      setSelectedArticle(article.id);
-      setSelectedArticles(article);
-      setArticleContent(article);
+  const handleArticleClick = (article) => {
+    setIsModalOpen(true);
+    setSelectedArticle(article.id);
+    setSelectedArticles(article);
+    setArticleContent(article);
 
       fetchSentimentData(article.id);
       fetchWordCloudData(article.id);
       fetchFakeNews(article.id); // Fetch fake news when article is clicked
     };
 
-    // Fetch sentiment data
-    const fetchSentimentData = (articleId) => {
-      const token = localStorage.getItem("token");
-      setLoadingSentiment(true);
+  const fetchSentimentData = (articleId) => {
+    const token = localStorage.getItem("token");
+    setLoadingSentiment(true);
 
       fetch(`http://localhost:8000/api/sentiment-analysis/${articleId}/`, {
         method: "GET",
@@ -1471,10 +1467,9 @@
         });
     };
 
-    // Fetch word cloud data
-    const fetchWordCloudData = (articleId) => {
-      const token = localStorage.getItem("token");
-      setLoadingWordCloud(true);
+  const fetchWordCloudData = (articleId) => {
+    const token = localStorage.getItem("token");
+    setLoadingWordCloud(true);
 
       fetch(`http://localhost:8000/api/wordcloud/${articleId}/`, {
         method: "GET",
@@ -1502,10 +1497,39 @@
         });
     };
 
-    // Fetch fake news data
-    const fetchFakeNews = (articleId) => {
-      const token = localStorage.getItem("token");
-      setLoadingFakeNews(true);
+  // New fetchFakeNews function
+  // const fetchFakeNews = (articleId) => {
+  //   const token = localStorage.getItem('token');
+  //   setLoadingFakeNews(true);
+
+  //   fetch(`http://localhost:8000/api/fake-news/${articleId}/`, {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch fake news data.');
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data); // Log the response data
+  //       setFakeNewsData(data); // Set fetched fake news data
+  //     })
+  //     .catch((error) => {
+  //       console.error('Fake News fetch error:', error);
+  //       setFakeNewsData('Error fetching fake news data.');
+  //     })
+  //     .finally(() => {
+  //       setLoadingFakeNews(false);
+  //     });
+  // };
+  const fetchFakeNews = (articleId) => {
+    const token = localStorage.getItem("token");
+    setLoadingFakeNews(true);
 
       fetch(`http://localhost:8000/api/fake-news/${articleId}/`, {
         method: "GET",
@@ -1533,60 +1557,58 @@
         });
     };
 
-    // Pagination handlers
-    const handlePrev = () => {
-      if (page > 1) setPage(page - 1);
-    };
+  const handlePrev = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
     const handleNext = () => {
       if (page < Math.ceil(totalResults / pageSize)) setPage(page + 1);
     };
 
-    // Close modal
-    const handleCloseModal = () => {
-      setIsModalOpen(false);
-      setSelectedArticle(null);
-      setSelectedArticles(null);
-      setWordCloudData(null);
-      setArticleContent(null);
-      setFakeNewsData(null); // Reset fake news data when modal closes
-    };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedArticle(null);
+    setSelectedArticles(null);
+    setWordCloudData(null);
+    setArticleContent(null);
+    setFakeNewsData(null); // Reset fake news data when modal closes
+  };
 
-    // Fetch articles when component mounts or page/search query changes
-    useEffect(() => {
-      const fetchArticles = () => {
-        setIsLoading(true);
-        setError(null);
+  useEffect(() => {
+    const fetchArticles = () => {
+      setIsLoading(true);
+      setError(null);
 
-        const token = localStorage.getItem("token");
-        fetch(`http://localhost:8000/api/articles/?=${searchQuery}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+      const token = localStorage.getItem("token");
+      fetch(`http://localhost:8000/api/articles/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          // throw new Error("Network response was not ok");
         })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            }
-          })
-          .then((myJson) => {
-            if (myJson.results) {
-              setTotalResults(myJson.count);
-              setData(myJson.results);
-            } else {
-              setError(myJson.message || "An error occurred");
-            }
-          })
-          .catch((error) => {
-            console.error("Fetch error:", error);
-            setError("Failed to fetch news. Please try again later.");
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-      };
+        .then((myJson) => {
+          if (myJson.results) {
+            setTotalResults(myJson.count);
+            setData(myJson.results);
+          } else {
+            setError(myJson.message || "An error occurred");
+          }
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+          setError("Failed to fetch news. Please try again later.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
 
       const debounceFetch = setTimeout(fetchArticles, 300);
 
@@ -1597,134 +1619,136 @@
       <>
         {error && <div className="text-red-500 mb-4">{error}</div>}
 
-        <div className="my-10 cards grid lg:place-content-center md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 xs:grid-cols-1 xs:gap-4 md:gap-10 lg:gap-14 md:px-16 xs:p-3">
-          {!isLoading ? (
-            data.map((element, index) => (
-              <EverythingCard
-                key={index}
-                title={element.title}
-                description={element.description}
-                imgUrl={element.url_to_image}
-                publishedAt={element.published_at}
-                url={element.url}
-                author={element.author}
-                source={element.source}
-                onClick={() => handleArticleClick(element)}
+      <div className="my-10 cards grid lg:place-content-center md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 xs:grid-cols-1 xs:gap-4 md:gap-10 lg:gap-14 md:px-16 xs:p-3">
+        {!isLoading ? (
+          data.map((element, index) => (
+            <EverythingCard
+              key={index}
+              title={element.title}
+              description={element.description}
+              imgUrl={element.url_to_image}
+              publishedAt={element.published_at}
+              url={element.url}
+              author={element.author}
+              source={element.source}
+              onClick={() => handleArticleClick(element)}
+            />
+          ))
+        ) : (
+          <Loader />
+        )}
+      </div>
+
+      {isModalOpen && (
+        <Modal
+          show={isModalOpen}
+          onClose={handleCloseModal}
+          article={selectedArticles}
+        >
+          {articleContent && (
+            <>
+              <h2 className="text-3xl font-extrabold text-center mb-4">
+                {articleContent.title}
+              </h2>
+              <img
+                src={articleContent.url_to_image || fallbackImage}
+                alt={articleContent.title}
+                className="w-full h-auto mt-4 border rounded-2xl"
               />
-            ))
-          ) : (
-            <Loader />
-          )}
-        </div>
-
-        {isModalOpen && (
-          <Modal
-            show={isModalOpen}
-            onClose={handleCloseModal}
-            article={selectedArticles}
-          >
-            {articleContent && (
-              <>
-                <h2 className="text-3xl font-extrabold text-center mb-4">
-                  {articleContent.title}
-                </h2>
-                <img
-                  src={articleContent.url_to_image || fallbackImage}
-                  alt={articleContent.title}
-                  className="w-full h-auto mt-4 border rounded-2xl"
-                />
-                <div className="text-center mt-4">
-                  <p className="text-gray-600 italic text-xl mb-4 font-serif">
-                    {articleContent.description}
-                  </p>
-                  <p className="font-semibold text-lg">
-                    Published on:{" "}
-                    {new Date(articleContent.publishedAt).toLocaleDateString()}
-                  </p>
-                  <p className="font-semibold text-lg">
-                    Author: {articleContent.author}
-                  </p>
-                  <p className="font-semibold text-lg">
-                    Source: {articleContent.source}
-                  </p>
-                  <a
-                    href={articleContent.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline mt-2 block"
-                  >
-                    Read Full Article
-                  </a>
-                </div>
-              </>
-            )}
-
-            {loadingSentiment ? (
-              <Loader />
-            ) : (
-              <div className="mt-4">
-                <h3 className="text-xl font-bold">Sentiment Analysis</h3>
-                {sentimentPData !== null && (
-                  <p>Positive Sentiment: {sentimentPData}%</p>
-                )}
-                {sentimentNData !== null && (
-                  <p>Negative Sentiment: {sentimentNData}%</p>
-                )}
+              <div className="text-center mt-4">
+                <p className="text-gray-600 italic text-xl mb-4 font-serif">
+                  {articleContent.description}
+                </p>
+                <p className="font-semibold text-lg">
+                  Published on:{" "}
+                  {new Date(articleContent.publishedAt).toLocaleDateString()}
+                </p>
+                <p className="font-semibold text-lg">
+                  Author: {articleContent.author}
+                </p>
+                <p className="font-semibold text-lg">
+                  Source: {articleContent.source}
+                </p>
+                <a
+                  href={articleContent.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline mt-2 block"
+                >
+                  Read Full Article
+                </a>
               </div>
-            )}
+            </>
+          )}
 
-            {loadingWordCloud ? (
-              <Loader />
-            ) : (
-              wordCloudData && (
-                <div className="mt-4">
-                  <h3 className="text-xl font-bold">Word Cloud</h3>
-                  <img
-                    src={wordCloudData}
-                    alt="Word Cloud"
-                    className="w-full h-auto mt-2"
-                  />
+          {loadingSentiment ? (
+            <Loader />
+          ) : (
+            <div className="mt-4">
+              <h3 className="text-xl font-bold">Sentiment Analysis</h3>
+              {sentimentPData !== null && (
+                <p>Positive Sentiment: {sentimentPData}%</p>
+              )}
+              {sentimentNData !== null && (
+                <p>Negative Sentiment: {sentimentNData}%</p>
+              )}
+            </div>
+          )}
+
+          {loadingWordCloud ? (
+            <Loader />
+          ) : (
+            <div className="mt-4">
+              {wordCloudData ? (
+                <img
+                  src={wordCloudData}
+                  alt="Word Cloud"
+                  className="w-full h-auto"
+                />
+              ) : (
+                <p>No word cloud data available.</p>
+              )}
+            </div>
+          )}
+          {loadingFakeNews ? (
+            <Loader />
+          ) : (
+            <div className="mt-4">
+              {fakeNewsData ? (
+                <div>
+                  <h3 className="text-xl font-bold">Fake News Data</h3>
+                  <p>
+                    Probability of Not Fake News: {fakeNewsData.toFixed(2)}%
+                  </p>{" "}
+                  {/* Display probability as percentage */}
                 </div>
-              )
-            )}
+              ) : (
+                <p>No fake news data available.</p>
+              )}
+            </div>
+          )}
+        </Modal>
+      )}
 
-            {loadingFakeNews ? (
-              <Loader />
-            ) : (
-              fakeNewsData && (
-                <div className="mt-4">
-                  <h3 className="text-xl font-bold">Fake News Detection</h3>
-                  <p>{fakeNewsData ? "Fake" : "Real"}</p>
-                </div>
-              )
-            )}
-          </Modal>
-        )}
-
-        {!isLoading && (
-          <div className="pagination flex justify-between items-center py-4">
-            <button
-              onClick={handlePrev}
-              disabled={page <= 1}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <span>
-              Page {page} of {Math.ceil(totalResults / pageSize)}
-            </span>
-            <button
-              onClick={handleNext}
-              disabled={page >= Math.ceil(totalResults / pageSize)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        )}
-      </>
-    );
-  }
+      <div className="flex justify-between my-4">
+        <button
+          onClick={handlePrev}
+          disabled={page === 1}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNext}
+          disabled={page >= Math.ceil(totalResults / pageSize)}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Next
+        </button>
+      </div>
+    </>
+  );
+}
 
   export default AllNews;
     
