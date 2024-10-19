@@ -384,6 +384,7 @@ function Header() {
     e.preventDefault();
     if (searchTerm.trim()) {  // Check if search term is not empty
       navigate(`/search/${searchTerm}`);  // Navigate to the search results page
+      // http://localhost:8000/api/articles/?search=india
     }
   }
 
