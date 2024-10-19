@@ -53,7 +53,7 @@ function MyProfile() {
         return response.json();
       })
       .then((data) => {
-        console.log(data)
+        console.log(data);
         setBookmarks(data.results || []);
       })
       .catch((error) => {
@@ -95,53 +95,50 @@ function MyProfile() {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-gradient-to-r from-purple-300 via-pink-300 to-red-300">
-      <div className="sidebar w-1/5 bg-white p-6 shadow-lg rounded-lg mt-[100px]">
+    <div className="flex h-screen w-screen bg-gradient-to-r from-purple-300 via-pink-300 to-red-300 mt-[100px] gap-0 mr-0">
+      <div className="sidebar w-1/5 bg-white p-6 shadow-lg rounded-lg mr-0">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-4">
           Menu
         </h2>
         <button
-          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 
-            ${
-              activeSection === "profile"
-                ? "bg-gray-300 border border-gray-400"
-                : ""
-            }`}
+          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${
+            activeSection === "profile"
+              ? "bg-gray-300 border border-gray-400"
+              : ""
+          }`}
           onClick={() => setActiveSection("profile")}
         >
           My Profile
         </button>
         <button
-          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 
-            ${
-              activeSection === "bookmarks"
-                ? "bg-gray-300 border border-gray-500"
-                : ""
-            }`}
+          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${
+            activeSection === "bookmarks"
+              ? "bg-gray-300 border border-gray-500"
+              : ""
+          }`}
           onClick={() => {
             setActiveSection("bookmarks");
-            getBookmark(); // Fetch bookmarks when the button is clicked
+            getBookmark();
           }}
         >
           My Bookmarks
         </button>
         <button
-          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 
-            ${
-              activeSection === "reviews"
-                ? "bg-gray-300 border border-gray-400"
-                : ""
-            }`}
+          className={`block w-full text-left p-3 mb-2 text-gray-700 rounded-lg transition duration-200 ease-in-out hover:bg-gray-200 ${
+            activeSection === "reviews"
+              ? "bg-gray-300 border border-gray-400"
+              : ""
+          }`}
           onClick={() => {
             setActiveSection("reviews");
-            getReviews(); // Fetch reviews when the button is clicked
+            getReviews();
           }}
         >
           My Reviews
         </button>
       </div>
 
-      <div className="content w-4/5 mx-auto mt-24 p-6"> {/* Increased width from w-3/4 to w-4/5 */}
+      <div className="content mx-auto mt-[5px] ml-0 mr-0 w-screen">
         {error && <div className="text-red-500 font-semibold">{error}</div>}
         {!error && !profileData && (
           <div className="text-gray-600">Loading profile...</div>
@@ -201,8 +198,10 @@ function MyProfile() {
           </div>
         )}
         {activeSection === "bookmarks" && (
-          <div className="bg-white shadow-lg rounded-lg p-6 mt-4" style={{ width: '1000px' }}>
-
+          <div
+            className="bg-white shadow-lg rounded-lg p-6 mt-4"
+            style={{ width: "1000px" }}
+          >
             {loadingWordCloud && (
               <div className="text-gray-600">Loading bookmarks...</div>
             )}
@@ -215,14 +214,19 @@ function MyProfile() {
                       key={index}
                       title={bookmark.article.title}
                       description={
-                        bookmark.article.description || "No description available"
+                        bookmark.article.description ||
+                        "No description available"
                       }
                       imgUrl={bookmark.article.url_to_image}
-                      publishedAt={bookmark.article.published_at || "Unknown Date"}
+                      publishedAt={
+                        bookmark.article.published_at || "Unknown Date"
+                      }
                       url={bookmark.article.url}
                       author={bookmark.article.author || "Unknown"}
                       source={bookmark.article.source || "Unknown Source"}
-                      onClick={() => window.open(bookmark.article.url, "_blank")} // Opens the article in a new tab
+                      onClick={() =>
+                        window.open(bookmark.article.url, "_blank")
+                      }
                     />
                   ))}
                 </div>
